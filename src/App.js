@@ -1,25 +1,140 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect} from 'react';
+import api from './services/api';
+
+import './global.css';
 import './App.css';
+import './Sidebar.css';
+import './main.css';
+
+
 
 function App() {
+
+  const [devs, setDevs] = useState([]);
+
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [techs, setTechs] = useState('');
+  const [github_username, setGithubUsername] = useState('');
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) =>{
+        const { latitude, longitude } = position.coords;
+
+        setLatitude(latitude);
+        setLongitude(longitude);
+      },
+      (err) => {
+        console.log(err);
+      },
+      {
+        timeout: 30000,
+      }
+    );
+  },[]);
+
+  useEffect(() => {
+    async function loadDevs(){
+      const response = await api.get('/devs');
+
+      setDevs(response.data);
+    }
+
+    loadDevs();
+  },[])
+
+  async function handleAddDev(e){
+    e.preventDefault();
+
+    const response = await api.post('/devs', {
+      github_username,
+      techs,
+      latitude,
+      longitude
+    });
+
+    setGithubUsername('');
+    setTechs('');
+    //Assim que se faz uma adição em uma Array no React e levando em conta o State(Imutabilidade)
+    setDevs([...devs, response.data]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div id="app">
+      <aside>
+        <strong>Cadastrar</strong>
+        <form onSubmit={handleAddDev}>
+          <div className="input-block">
+              <label htmlFor="github_username">Usuário do Github</label>
+              <input 
+              type="text" 
+              name="github_username" 
+              id="github_username"
+              required
+              value={github_username}
+              onChange={e => setGithubUsername(e.target.value)}
+              />
+          </div>
+          <div className="input-block">
+            <label htmlFor="techs">Tecnologias</label>
+            <input 
+            type="text" 
+            name="techs" 
+            id="techs"
+            required
+            value={techs}
+            onChange={e => setTechs(e.target.value)}
+            />
+          </div>
+          
+          <div className="input-group">
+            <div className="input-block">
+              <label htmlFor="latitude">Latitude</label>
+              <input 
+                type="text" 
+                name="latitude" 
+                id="latitude"
+                required
+                onChange={e => setLatitude(e.target.value)}
+                value={latitude}/>
+            </div>
+
+            <div className="input-block">
+              <label htmlFor="longitude">Longitude</label>
+              <input 
+              type="text" 
+              name="longitude" 
+              id="longitude"
+              required 
+              value={longitude}
+              onChange={e => setLongitude(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <button type="submit">Salvar</button>
+        </form>
+      </aside>
+
+      <main>
+        <ul>
+          { devs.map(dev => (
+            <li key={dev._id} className="dev-item">
+              <header>
+                <img src={dev.avatar_url} alt={dev.name}/>
+                <div className="user-info">
+                  <strong>{dev.name}</strong>
+                  <span>{dev.techs.join(', ')}</span>
+                </div>
+              </header>
+              <p>{dev.bio == null ? "[...]" : dev.bio}</p>
+              <a href={`https://github.com/${dev.github_username}`}>Acessar Perfil no Github</a>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </div>  
   );
 }
 
