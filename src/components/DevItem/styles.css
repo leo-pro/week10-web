@@ -9,6 +9,7 @@ li.dev-item header{
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
 }
 
 li.dev-item header img{
@@ -19,6 +20,10 @@ li.dev-item header img{
 
 li.dev-item header .user-info{
     margin-left: 10px;
+}
+
+li.dev-item header .user-actions{
+    margin-left: 50px;
 }
 
 .user-info strong{

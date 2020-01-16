@@ -55,13 +55,21 @@ function DevForm({ onSubmit }){
           </div>
           <div className="input-block">
             <label htmlFor="techs">Tecnologias</label>
+                {/* ReactJS
+                <input 
+                    type="checkbox"
+                    name="techs"
+                    id="techs"
+                    required
+                    value={techs.split(', ')}
+                /> */}
             <input 
-            type="text" 
-            name="techs" 
-            id="techs"
-            required
-            value={techs}
-            onChange={e => setTechs(e.target.value)}
+                type="text" 
+                name="techs" 
+                id="techs"
+                required
+                value={techs}
+                onChange={e => setTechs(e.target.value)}
             />
           </div>
           
