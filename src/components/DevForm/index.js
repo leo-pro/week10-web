@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import './styles.css';
 
@@ -6,11 +8,23 @@ function DevForm({ onSubmit }){
 
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
-    const [techs, setTechs] = useState('');
+    const [techs, setTechs] = useState([]);
     const [github_username, setGithubUsername] = useState('');
+
+    // const [checkbox, setCheckbox] = useState([])
+    //     checkedReact: true,
+    //     checkedReactNative: true,
+    //     checkedJavaScript: true,
+    //     checkedHtml: true,
+    //     checkedCss: true,
+    //     checkedAngular: true,
+    //     checkedPython: true,
+    // })
 
     async function handleSubmit(e){
         e.preventDefault();
+
+        console.log(techs);
 
         await onSubmit({
             github_username,
@@ -20,7 +34,7 @@ function DevForm({ onSubmit }){
         });
 
         setGithubUsername('');
-        setTechs('');
+        setTechs([]);
     }
 
     useEffect(() => {
@@ -55,22 +69,84 @@ function DevForm({ onSubmit }){
           </div>
           <div className="input-block">
             <label htmlFor="techs">Tecnologias</label>
-                {/* ReactJS
-                <input 
-                    type="checkbox"
-                    name="techs"
-                    id="techs"
-                    required
-                    value={techs.split(', ')}
-                /> */}
-            <input 
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        value="ReactJS"
+                        color="primary"
+                        onChange={e => setTechs(...techs, e.target.value)}
+                    />
+                }
+                label="ReactJS"
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        value="React Native"
+                        color="primary"
+                        onChange={e => setTechs(...techs, e.target.value)}
+                    />
+                }
+                label="React Native"
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        value="JavaScript"
+                        color="primary"
+                        onChange={e => setTechs(...techs, e.target.value)}
+                    />
+                }
+                label="JavaScript"
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        value="HTML"
+                        color="primary"
+                        onChange={e => setTechs(...techs, e.target.value)}
+                    />
+                }
+                label="HTML"
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        value="CSS"
+                        color="primary"
+                        onChange={e => setTechs(...techs, e.target.value)}
+                    />
+                }
+                label="CSS"
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        value="Angular"
+                        color="primary"
+                        onChange={e => setTechs(...techs, e.target.value)}
+                    />
+                }
+                label="Angular"
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        value="Python"
+                        color="primary"
+                        onChange={e => setTechs(...techs, e.target.value)}
+                    />
+                }
+                label="Python"
+            />
+            {/* <input 
                 type="text" 
                 name="techs" 
                 id="techs"
                 required
                 value={techs}
                 onChange={e => setTechs(e.target.value)}
-            />
+            /> */}
           </div>
           
           <div className="input-group">

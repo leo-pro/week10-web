@@ -7,7 +7,7 @@ import './styles.css';
 
 function DevItem({ dev }){
     function editHandle(){
-        console.log("Usuário");
+        //console.log("Usuário");
     }
     
     return (
@@ -23,7 +23,7 @@ function DevItem({ dev }){
                     <DeleteForeverTwoToneIcon onClick={editHandle()}></DeleteForeverTwoToneIcon>
                 </div>
             </header>
-            <p>{dev.bio == null ? "[...]" : dev.bio}</p>
+            <p>{dev.bio == null ? <i>No have bio.</i> : dev.bio}</p>
             <a href={`https://github.com/${dev.github_username}`} target="_blank" rel="noopener noreferrer">Acessar Perfil no Github</a>
         </li>
     );
